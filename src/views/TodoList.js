@@ -1,10 +1,10 @@
 import React,{useState} from 'react';
 import { useSelector,useDispatch } from 'react-redux';
 import TodoItem from '../components/TodoItem';
-
+import {Button, Typography, Grid, Box, Divider} from '@mui/material';
+import TextField from '@mui/material/TextField';
 
 const TodoList = () => {
-
   //#2 Used to get a single attribute or object inside the Reducer
 
   //Get todoList from todoReducer
@@ -14,12 +14,12 @@ const TodoList = () => {
   const dispatch = useDispatch();
 
   //Local state for the input
-  const [inputTodo,setInputTodo] =  useState('');
+  const [ inputTodo, setInputTodo ] =  useState('');
   //Local state for the input error message
-  const [errMsg,setErrMsg] = useState('');
+  const [ errMsg, setErrMsg ] = useState('');
 
   //Handle onChange event
-  const handleInput = (e)=>{
+  const handleInput = (e) =>{
     setInputTodo(e.target.value);
   }
 
@@ -42,38 +42,56 @@ const TodoList = () => {
         //Display Error message
         setErrMsg('Please input something...');
     }
-
-   
   }
 
-    return (    
-        <section id="section-todo">
-        <h3 className="center-align white-text blue">Todo List</h3>
-        {
-            todoList.length>0?
-            (<ul className="collection">
-            {
-              todoList.map(item => {
-                return <TodoItem key={item.id} item={item} />
-              })
-            }
-          </ul>):
-          (<p className="center-align">You don't have anything to do! Awesome!</p>)
-        }
-       
-        <div className="row">
-        <p className="red-text err-msg col s12 center-align">
-        {errMsg}
-        </p>
-        <div className="input-field col s10">
-        <input onChange={handleInput} value={inputTodo} placeholder="Add todo..." id="todo-input" type="text" />
-        <label htmlFor="todo-input" className="active">New Todo</label>
-        </div>
-      
-        <button className="btn col s2 blue" onClick={addNewTodo} >Add</button>
-        </div>
-      </section>
-      );
+  return (    
+    <Box>
+      <Typography variant='h3' align='center' className="typography">Todo List</Typography>
+
+      <Grid container direction="column" spacing={2} style={{paddingTop: '15px', paddingBottom: '15px'}}>
+        { todoList.length > 0 ?
+                todoList.map(item => {
+                  return (
+                    <Grid item xs>
+                      <TodoItem key={item.id} item={item} />
+                      <Divider/>
+                    </Grid>);
+                })
+              :
+            <Typography align="center" variant="h6">You don't have anything to do! Awesome!</Typography>
+        }   
+
+        <Grid item xs>
+          <Typography variant='body1' color="red">
+            {errMsg}
+          </Typography>
+        </Grid>
+
+        <Grid item xs>
+          <Grid container direction="row" spacing={2}>
+            <Grid item xs={11} container alignItems="end">
+              <TextField
+                id="todo-text"
+                variant="standard"
+                color="primary"
+                fullWidth
+                onChange={handleInput}
+                value={inputTodo}
+                placeholder='Add todo...'
+                type="text"
+              />
+            </Grid>
+
+            <Grid item xs={1} container>
+              <Button color="secondary" variant="contained" onClick={addNewTodo} >
+                Add
+              </Button>
+            </Grid>
+          </Grid>
+        </Grid>
+      </Grid>  
+    </Box>
+  );
 }
  
 export default TodoList;

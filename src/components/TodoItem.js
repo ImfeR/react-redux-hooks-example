@@ -1,5 +1,7 @@
 import React from 'react';
-import {useSelector, useDispatch} from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { Grid, Box, Typography, IconButton } from '@mui/material';
+import ClearIcon from '@mui/icons-material/Clear';
 
 //Single todo item component
 const TodoItem = (props) => {
@@ -17,15 +19,21 @@ const TodoItem = (props) => {
     }
 
     return (
-        <li className="collection-item" key={props.item.id}>{props.item.content}
-            <span
-                onClick={() => {
-                removeTodoItem(props.item.id)
-            }}
-                className="secondary-content">
-                <i className="remove-btn material-icons blue-text">clear</i>
-            </span>
-        </li>
+        <Box key={props.item.id}>
+            <Grid container direction="row" justifyContent="space-between">
+                <Grid item xs={10} container alignItems="center" >
+                    <Typography variant="h6">
+                        {props.item.content}
+                    </Typography>
+                </Grid>
+
+                <Grid item xs={1} container justifyContent="end" alignItems="center">
+                    <IconButton size="large" onClick={() => {removeTodoItem(props.item.id)}}>
+                        <ClearIcon/>
+                    </IconButton>
+                </Grid>
+            </Grid>
+        </Box>
     );
 }
 
